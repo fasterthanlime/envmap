@@ -1,0 +1,32 @@
+17 Nov
+------
+
+ * Project Proposal
+ * Project set-up, etc.
+
+24 Nov
+------
+
+ * Basic environment mapping (cube map)
+ * Reflection only 
+ * Powerpoint presentation
+
+1 Dec
+-----
+
+ * Refraction (Fresnel)
+
+8 Dec
+-----
+
+ * Chromatic dispersion
+
+15 Dec
+------
+
+ * Write final presentation & report
+
+21 Dec
+------
+
+ * Final presentation
