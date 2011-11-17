@@ -38,6 +38,7 @@ void Shader::create(const std::string _vertexFileName, const std::string& _fragm
 	unsigned int vertexShader;
 	std::ifstream fileVs;
 	fileVs.open(_vertexFileName.c_str(), std::ios::binary);
+  std::cout << "Loading vertex shader " << _vertexFileName << std::endl;
 	assert(fileVs.is_open());
 	if(fileVs.is_open())
 	{  
@@ -81,6 +82,7 @@ void Shader::create(const std::string _vertexFileName, const std::string& _fragm
 	unsigned int fragmentShader;
 	std::ifstream fileFs;
 	fileFs.open(_fragmentFileName.c_str(), std::ios::binary);
+  std::cout << "Loading fragment shader " << _fragmentFileName << std::endl;
 	assert(fileFs.is_open());
 	if(fileFs.is_open())
 	{  
