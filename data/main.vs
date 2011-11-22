@@ -16,13 +16,13 @@ void main()
 	// Exercise 3.2.5 and 3.3.1
 	gl_Position = ProjectionMatrix * WorldCameraTransform * ModelWorldTransform * gl_Vertex;
 	
-	//color = vec4(diffuseColor, 1.0);
+	Color = vec4(DiffuseColor, 1.0);
 	gl_TexCoord[0] = gl_MultiTexCoord0;
-	normal = WorldCameraNormalTransform * ModelWorldNormalTransform * gl_Normal;
-	//vertex_to_light_vector = - vec3(WorldCameraTransform * ModelWorldTransform * gl_Vertex);
+	Normal = WorldCameraNormalTransform * ModelWorldNormalTransform * gl_Normal;
+	VertexToLightVector = - vec3(WorldCameraTransform * ModelWorldTransform * gl_Vertex);
 	
 	// need this line so OpenGL doesn't optimize out the variables -- remove in your solution
     // {
-	ModelWorldTransform; WorldCameraTransform; ProjectionMatrix; WorldCameraNormalTransform; ModelWorldNormalTransform; normal; color;
+	ModelWorldTransform; WorldCameraTransform; ProjectionMatrix; WorldCameraNormalTransform; ModelWorldNormalTransform; Normal; Color;
     // }
 }
