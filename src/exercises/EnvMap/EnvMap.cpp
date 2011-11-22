@@ -11,6 +11,7 @@
 
 //== INCLUDES =================================================================
 
+#include <IL/il.h>
 #include "EnvMap.h"
 #include "../../utils/Mesh3DReader.h"
 
@@ -21,6 +22,9 @@ EnvMap::
 EnvMap(const char* _title, int _width, int _height)
 : TrackballViewer(_title, _width, _height)
 {
+  // Initialize image library
+  ilInit();
+
   init();
 }
 
