@@ -40,6 +40,9 @@ init()
 
 	// load shaders
 	m_mainShader.create("main.vs", "main.fs");
+
+  // load cube map
+  m_cubeMap = new CubeMap("deadmeat_skymorning");
 }
 
 
@@ -101,13 +104,6 @@ draw_scene(DrawMode _draw_mode)
 	glClearColor(1,1,1,0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  // set parameters
-	m_mainShader.setMatrix4x4Uniform("WorldCameraTransform", m_camera.getTransformation().Inverse());
-  m_mainShader.setMatrix3x3Uniform("WorldCameraNormalTransform", m_camera.getTransformation().Transpose());
-	m_mainShader.setMatrix4x4Uniform("ProjectionMatrix", m_camera.getProjectionMatrix());
-	m_mainShader.setMatrix4x4Uniform("ModelWorldTransform", m_mesh.getTransformation() );
-  m_mainShader.setMatrix4x4Uniform("ModelWorldNormalTransform", m_mesh.getTransformation().Inverse().Transpose() );
-
   // draw environment cube
   drawEnvironment();
 
@@ -125,7 +121,14 @@ drawEnvironment() {
 
   m_mainShader.bind(); 
 
-  m_mainShader.setVector3Uniform("diffuseColor", 0.0f, 0.0f, 1.0f);
+  // set parameters
+	m_mainShader.setMatrix4x4Uniform("WorldCameraTransform", m_camera.getTransformation().Inverse());
+  m_mainShader.setMatrix3x3Uniform("WorldCameraNormalTransform", m_camera.getTransformation().Transpose());
+	m_mainShader.setMatrix4x4Uniform("ProjectionMatrix", m_camera.getProjectionMatrix());
+  m_mainShader.setMatrix4x4Uniform("ModelWorldTransform", Matrix4().loadIdentity());
+  m_mainShader.setMatrix4x4Uniform("ModelWorldNormalTransform", Matrix4().loadIdentity());
+
+  m_mainShader.setVector3Uniform("DiffuseColor", 0.0f, 0.0f, 1.0f);
 
   // POSITIVE_X
   glBegin(GL_QUADS);
@@ -189,14 +192,14 @@ void
 EnvMap::
 drawObject() {
 	m_mainShader.bind(); 
-	
-	// set parameters
+
+  // set parameters
 	m_mainShader.setMatrix4x4Uniform("WorldCameraTransform", m_camera.getTransformation().Inverse());
   m_mainShader.setMatrix3x3Uniform("WorldCameraNormalTransform", m_camera.getTransformation().Transpose());
 	m_mainShader.setMatrix4x4Uniform("ProjectionMatrix", m_camera.getProjectionMatrix());
 	m_mainShader.setMatrix4x4Uniform("ModelWorldTransform", m_mesh.getTransformation() );
   m_mainShader.setMatrix4x4Uniform("ModelWorldNormalTransform", m_mesh.getTransformation().Inverse().Transpose() );
-
+	
   glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	if(m_mesh.hasUvTextureCoord())
@@ -210,15 +213,15 @@ drawObject() {
 	for(unsigned int i = 0; i < m_mesh.getNumberOfParts(); i++)
 	{
 		bool hasTexture = m_mesh.hasUvTextureCoord() && m_mesh.getMaterial(i).hasDiffuseTexture();
-		m_mainShader.setIntUniform("useTexture", hasTexture);
-		m_mainShader.setVector3Uniform("diffuseColor", 
+		m_mainShader.setIntUniform("UseTexture", hasTexture);
+		m_mainShader.setVector3Uniform("DiffuseColor", 
 										  m_mesh.getMaterial(i).m_diffuseColor.x, 
 										  m_mesh.getMaterial(i).m_diffuseColor.y, 
 										  m_mesh.getMaterial(i).m_diffuseColor.z );
 		if(hasTexture)
 		{
 			m_mesh.getMaterial(i).m_diffuseTexture.bind();
-			m_mainShader.setIntUniform("textureDiffuse", m_mesh.getMaterial(i).m_diffuseTexture.getLayer());
+			m_mainShader.setIntUniform("TextureDiffuse", m_mesh.getMaterial(i).m_diffuseTexture.getLayer());
 		}
 
    	glDrawElements( GL_TRIANGLES, m_mesh.getNumberOfFaces(i)*3, GL_UNSIGNED_INT, m_mesh.getVertexIndicesPointer(i) );

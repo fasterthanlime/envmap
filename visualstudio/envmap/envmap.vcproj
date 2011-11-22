@@ -192,6 +192,10 @@
 				Name="gl"
 				>
 				<File
+					RelativePath="..\..\src\gl\CubeMap.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\gl\fbo.cpp"
 					>
 				</File>
@@ -231,6 +235,10 @@
 				>
 				<File
 					RelativePath="..\..\src\gl\Camera3D.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\gl\CubeMap.h"
 					>
 				</File>
 				<File
