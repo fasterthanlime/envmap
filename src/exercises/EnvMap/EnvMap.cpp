@@ -145,10 +145,9 @@ drawObject() {
 	m_mainShader.setMatrix4x4Uniform("ProjectionMatrix", m_camera.getProjectionMatrix());
 	m_mainShader.setMatrix4x4Uniform("ModelWorldTransform", m_mesh.getTransformation() );
   m_mainShader.setMatrix4x4Uniform("ModelWorldNormalTransform", m_mesh.getTransformation().Inverse().Transpose() );
-	
-  // test computing the camera's position
-  Vector3 origin;
-  origin = m_camera.getTransformation() * origin;
+
+  Vector3 cameraPosition = m_camera.getTransformation() * Vector3();
+  m_mainShader.setVector3Uniform("CameraPosition", cameraPosition.x, cameraPosition.y, cameraPosition.z);
 
   glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
