@@ -19,6 +19,7 @@ class CubeMap
 public:
     CubeMap(const std::string& prefix, const float size, Shader *shader);
     void draw();
+    Texture getCubeTexture();
 
 private:
     float m_size;
@@ -27,7 +28,10 @@ private:
     Shader *m_shader;
 
     Texture m_textures[6];
-    std::string m_texture_names[6];
+    Texture m_cubeTexture;
+
+    std::string m_texture_suffixes[6];
+    std::string m_texture_paths[6];
 };
 
 #endif

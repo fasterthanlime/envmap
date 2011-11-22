@@ -61,6 +61,7 @@ protected:
 	
 	// main shader
 	Shader m_mainShader;
+  Shader m_reflectionShader;
 
   // cube map
   CubeMap *m_cubeMap;

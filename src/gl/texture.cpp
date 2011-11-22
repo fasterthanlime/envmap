@@ -85,6 +85,45 @@ void Texture::create(const std::string& _fileName)
 	
 	ilDeleteImages(1, &ilID);
 }
+
+///////////////////////////////////////////////////////////////////////////
+void Texture::createCubeMap(const std::string *_fileNames)
+{
+
+  ILuint ilIDs[6];
+  ilGenImages(6, ilIDs);
+
+	clear();
+
+  glGenTextures(1, &id_);
+  assert(id_ != 0);
+  glBindTexture(GL_TEXTURE_2D, id_);
+
+  for(int i = 0; i < 6; i++) {
+    ilBindImage(ilIDs[i]);
+    ilLoadImage(_fileNames[i].c_str());
+
+	  width_  = ilGetInteger(IL_IMAGE_WIDTH);
+	  height_ = ilGetInteger(IL_IMAGE_HEIGHT);
+
+    std::cout << "Loaded texture # " << i << " of our cubemap, " << _fileNames[i] << " (" << width_ << "x" << height_ << ")" << std::endl;
+    ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
+
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X_ARB + i, 0, GL_RGB, width_, height_, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+  }
+
+	ilDeleteImages(6, ilIDs);
+
+  //glGenerateMipmapEXT(GL_TEXTURE_2D);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+  glBindTexture(GL_TEXTURE_2D, 0); 
+}
+
 ///////////////////////////////////////////////////////////////////////////
 void Texture::bind() const
 {

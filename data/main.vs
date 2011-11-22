@@ -13,7 +13,6 @@ varying vec2 TextureCoordinate;
 
 void main()
 {
-	// Exercise 3.2.5 and 3.3.1
 	gl_Position = ProjectionMatrix * WorldCameraTransform * ModelWorldTransform * gl_Vertex;
 	
 	Color = vec4(DiffuseColor, 1.0);

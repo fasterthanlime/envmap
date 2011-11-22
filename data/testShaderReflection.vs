@@ -6,17 +6,18 @@ uniform mat3 WorldCameraNormalTransform;
 uniform mat3 ModelWorldNormalTransform;
 uniform vec3 DiffuseColor;
 
-uniform float3 EyePosition;
+uniform vec3 EyePosition;
+varying vec3 Normal;
+varying vec4 Color;
 
 varying vec3 ReflectedRay;
 
-vec3 reflect(vec3 I, vec3 N){return I - 2.0 * N * dot(N, I);}
+vec3 reflect(vec3 I, vec3 N){	return I - 2.0 * N * dot(N, I);}
 
 void main()
 {
+
 	gl_Position = ProjectionMatrix * WorldCameraTransform * ModelWorldTransform * gl_Vertex;
-	gl_TexCoord[0] = gl_MultiTexCoord0;
-	
 	
 	vec3 WorldPosition = (ModelWorldTransform * gl_Vertex).xyz;
 	Normal = normalize((ModelWorldNormalTransform * gl_Normal));

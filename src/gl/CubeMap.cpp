@@ -9,16 +9,24 @@ CubeMap::CubeMap(const std::string& prefix, const float size, Shader *shader)
   m_size = size;
   m_shader = shader;
   
-  m_texture_names[0] = "_positive_z";
-  m_texture_names[1] = "_negative_x";
-  m_texture_names[2] = "_negative_z";
-  m_texture_names[3] = "_positive_x";
-  m_texture_names[4] = "_positive_y";
-  m_texture_names[5] = "_negative_y";
+  m_texture_suffixes[0] = "_positive_z";
+  m_texture_suffixes[1] = "_negative_x";
+  m_texture_suffixes[2] = "_negative_z";
+  m_texture_suffixes[3] = "_positive_x";
+  m_texture_suffixes[4] = "_positive_y";
+  m_texture_suffixes[5] = "_negative_y";
 
   for(int i = 0; i < 6; i++) {
-    m_textures[i].create(m_prefix + m_texture_names[i] + ".tga");
+    m_texture_paths[i] = m_prefix + m_texture_suffixes[i] + ".tga";
+    m_textures[i].create(m_texture_paths[i]);
   }
+
+  m_cubeTexture.createCubeMap(m_texture_paths);
+}
+
+Texture CubeMap::getCubeTexture()
+{
+  return m_cubeTexture;
 }
 
 void CubeMap::draw()

@@ -36,6 +36,7 @@ public:
 				int _param = GL_LINEAR);
 	// Read any image file
 	void create(const std::string& _fileName);
+  void createCubeMap(const std::string *fileNames);
 
 	void bind() const;
 	void unbind() const;
