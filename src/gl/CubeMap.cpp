@@ -1,12 +1,13 @@
 #include "CubeMap.h"
 #include <cstdio>
 
-CubeMap::CubeMap(const std::string& prefix, const float size)
+CubeMap::CubeMap(const std::string& prefix, const float size, Shader *shader)
 {
   std::cout << "Loading cube map " << prefix << std::endl;
 
   m_prefix = prefix;
   m_size = size;
+  m_shader = shader;
   
   m_texture_names[0] = "_positive_x";
   m_texture_names[1] = "_negative_x";
@@ -15,22 +16,39 @@ CubeMap::CubeMap(const std::string& prefix, const float size)
   m_texture_names[4] = "_positive_z";
   m_texture_names[5] = "_negative_z";
 
-  ilGenImages(6, m_textures);
+  ILuint ilIDs[6];
+  ilGenImages(6, ilIDs);
+  glGenTextures(6, m_textures);
   
   for(int i = 0; i < 6; i++) {
     std::string texture_file = m_prefix + m_texture_names[i] + ".tga";
     std::cout << "Loading image " << texture_file << std::endl;
-    ilBindImage(m_textures[i]);
+    ilBindImage(ilIDs[i]);
     
-    ilLoadImage(texture_file.c_str());
-    std::cout << "Image size: " << ilGetInteger(IL_IMAGE_WIDTH) << "x" << ilGetInteger(IL_IMAGE_HEIGHT) << std::endl;
+    int success = ilLoadImage(texture_file.c_str());
+    if (success) {
+      std::cout << "Image size: " << ilGetInteger(IL_IMAGE_WIDTH) << "x" << ilGetInteger(IL_IMAGE_HEIGHT) << std::endl;
+
+      success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
+
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+      glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
+         ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
+         ilGetData());
+    } 
   }
+
+  ilDeleteImages(6, ilIDs);
 }
 
 void CubeMap::draw()
 {
+
     // Render the front quad
-    glBindTexture(GL_TEXTURE_2D, m_textures[0]);
+    m_shader->setIntUniform("Texture", m_textures[0]);
     glBegin(GL_QUADS);
         glTexCoord2f(0.0f, 0.0f); glVertex3f(  m_size, -m_size, -m_size );
         glTexCoord2f(1.0f, 0.0f); glVertex3f( -m_size, -m_size, -m_size );
@@ -39,7 +57,7 @@ void CubeMap::draw()
     glEnd();
  
     // Render the left quad
-    glBindTexture(GL_TEXTURE_2D, m_textures[1]);
+    m_shader->setIntUniform("Texture", m_textures[1]);
     glBegin(GL_QUADS);
         glTexCoord2f(0.0f, 0.0f); glVertex3f(  m_size, -m_size,  m_size );
         glTexCoord2f(1.0f, 0.0f); glVertex3f(  m_size, -m_size, -m_size );
@@ -48,7 +66,7 @@ void CubeMap::draw()
     glEnd();
  
     // Render the back quad
-    glBindTexture(GL_TEXTURE_2D, m_textures[2]);
+    m_shader->setIntUniform("Texture", m_textures[2]);
     glBegin(GL_QUADS);
         glTexCoord2f(0.0f, 0.0f); glVertex3f( -m_size, -m_size,  m_size );
         glTexCoord2f(1.0f, 0.0f); glVertex3f(  m_size, -m_size,  m_size );
@@ -58,7 +76,7 @@ void CubeMap::draw()
     glEnd();
  
     // Render the right quad
-    glBindTexture(GL_TEXTURE_2D, m_textures[3]);
+    m_shader->setIntUniform("Texture", m_textures[3]);
     glBegin(GL_QUADS);
         glTexCoord2f(0.0f, 0.0f); glVertex3f( -m_size, -m_size, -m_size );
         glTexCoord2f(1.0f, 0.0f); glVertex3f( -m_size, -m_size,  m_size );
@@ -67,7 +85,7 @@ void CubeMap::draw()
     glEnd();
  
     // Render the top quad
-    glBindTexture(GL_TEXTURE_2D, m_textures[4]);
+    m_shader->setIntUniform("Texture", m_textures[4]);
     glBegin(GL_QUADS);
         glTexCoord2f(0.0f, 1.0f); glVertex3f( -m_size,  m_size, -m_size );
         glTexCoord2f(0.0f, 0.0f); glVertex3f( -m_size,  m_size,  m_size );
@@ -76,7 +94,7 @@ void CubeMap::draw()
     glEnd();
  
     // Render the bottom quad
-    glBindTexture(GL_TEXTURE_2D, m_textures[5]);
+    m_shader->setIntUniform("Texture", m_textures[5]);
     glBegin(GL_QUADS);
         glTexCoord2f(0.0f, 0.0f); glVertex3f( -m_size, -m_size, -m_size );
         glTexCoord2f(0.0f, 1.0f); glVertex3f( -m_size, -m_size,  m_size );

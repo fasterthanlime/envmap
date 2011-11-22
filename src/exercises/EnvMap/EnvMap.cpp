@@ -46,7 +46,7 @@ init()
 	m_mainShader.create("main.vs", "main.fs");
 
   // load cube map
-  m_cubeMap = new CubeMap("deadmeat_skymorning", 15.0f);
+  m_cubeMap = new CubeMap("deadmeat_skymorning", 15.0f, &m_mainShader);
 }
 
 

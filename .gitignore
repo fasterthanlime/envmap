@@ -2,3 +2,6 @@
 visualstudio/envmap/Debug/*.obj
 visualstudio/envmap/Debug/*.idb
 visualstudio/envmap/Debug/*.pdb
+visualstudio/03-CartoonViewer/*.ncb
+visualstudio/03-CartoonViewer/*.sln
+visualstudio/03-CartoonViewer/*.suo
