@@ -42,7 +42,7 @@ init()
 	m_mainShader.create("main.vs", "main.fs");
 
   // load cube map
-  m_cubeMap = new CubeMap("deadmeat_skymorning");
+  m_cubeMap = new CubeMap("deadmeat_skymorning", 15.0f);
 }
 
 
@@ -117,8 +117,6 @@ draw_scene(DrawMode _draw_mode)
 void 
 EnvMap::
 drawEnvironment() {
-  const float size = 15.0f;
-
   m_mainShader.bind(); 
 
   // set parameters
@@ -130,7 +128,7 @@ drawEnvironment() {
 
   m_mainShader.setVector3Uniform("DiffuseColor", 0.0f, 0.0f, 1.0f);
 
-  m_cubeMap.draw();
+  m_cubeMap->draw();
   
   m_mainShader.unbind();
 }
@@ -148,6 +146,10 @@ drawObject() {
 	m_mainShader.setMatrix4x4Uniform("ModelWorldTransform", m_mesh.getTransformation() );
   m_mainShader.setMatrix4x4Uniform("ModelWorldNormalTransform", m_mesh.getTransformation().Inverse().Transpose() );
 	
+  // test computing the camera's position
+  Vector3 origin;
+  origin = m_camera.getTransformation() * origin;
+
   glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	if(m_mesh.hasUvTextureCoord())
