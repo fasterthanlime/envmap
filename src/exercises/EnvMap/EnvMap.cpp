@@ -130,59 +130,7 @@ drawEnvironment() {
 
   m_mainShader.setVector3Uniform("DiffuseColor", 0.0f, 0.0f, 1.0f);
 
-  // POSITIVE_X
-  glBegin(GL_QUADS);
-  glNormal3f( 1.0f, 0.0f, 0.0f );
-  glVertex3f( size, -size,-size);
-  glVertex3f( size, -size, size);
-  glVertex3f( size,  size, size);
-  glVertex3f( size,  size,-size);
-  glEnd();
-  
-  // NEGATIVE_X
-  glBegin(GL_QUADS);
-  glNormal3f(-1.0f, 0.0f, 0.0f );
-  glVertex3f(-size, -size,-size);
-  glVertex3f(-size, -size, size);
-  glVertex3f(-size,  size, size);
-  glVertex3f(-size,  size,-size);
-  glEnd();
-
-  // POSITIVE_Y
-  glBegin(GL_QUADS);
-  glNormal3f( 0.0f, 1.0f, 0.0f );
-  glVertex3f(-size,  size,-size);
-  glVertex3f(-size,  size, size);
-  glVertex3f( size,  size, size);
-  glVertex3f( size,  size,-size);
-  glEnd();
-
-  // NEGATIVE_Y
-  glBegin(GL_QUADS);
-  glNormal3f( 0.0f,-1.0f, 0.0f );
-  glVertex3f(-size, -size,-size);
-  glVertex3f(-size, -size, size);
-  glVertex3f( size, -size, size);
-  glVertex3f( size, -size,-size);
-  glEnd();
-
-  // POSITIVE_Z
-  glBegin(GL_QUADS);
-  glNormal3f( 0.0f, 0.0f, 1.0f );
-  glVertex3f(-size, -size, size);
-  glVertex3f(-size,  size, size);
-  glVertex3f( size,  size, size);
-  glVertex3f( size, -size, size);
-  glEnd();
-
-  // NEGATIVE_Z
-  glBegin(GL_QUADS);
-  glNormal3f( 0.0f, 0.0f,-1.0f );
-  glVertex3f(-size, -size, -size);
-  glVertex3f(-size,  size, -size);
-  glVertex3f( size,  size, -size);
-  glVertex3f( size, -size, -size);
-  glEnd();
+  m_cubeMap.draw();
   
   m_mainShader.unbind();
 }
