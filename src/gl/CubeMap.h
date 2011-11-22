@@ -22,7 +22,12 @@ public:
 
 private:
     float m_size;
+    std::string m_prefix;
+
     Shader m_shader;
+
+    Texture m_textures[6];
+    std::string m_texture_names[6];
 };
 
 #endif
