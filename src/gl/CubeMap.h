@@ -13,6 +13,7 @@ class CubeMap
 {
 public:
     CubeMap(const std::string& prefix);
+    draw();
 
 private:
     Shader m_shader;
