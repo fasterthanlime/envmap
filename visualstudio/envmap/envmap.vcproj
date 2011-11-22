@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib glew32.lib"
+				AdditionalDependencies="glut32.lib glew32.lib DevIL.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="$(SolutionDir)\..\libs"
 				GenerateDebugInformation="true"

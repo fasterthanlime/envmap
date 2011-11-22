@@ -13,6 +13,10 @@
 #define __TEXTURE_H__
 #include <string>
 #include "gl.h"
+
+#undef _UNICODE
+#include "IL/il.h"
+
 class Texture 
 {
 public:
@@ -30,10 +34,8 @@ public:
 				unsigned int _type,
 				void * _data = NULL,
 				int _param = GL_LINEAR);
-	// Read RGB TGA file
+	// Read any image file
 	void create(const std::string& _fileName);
-	// Write the texture in a RGB TGA file
-	void write(const std::string& _fileName) const;
 
 	void bind() const;
 	void unbind() const;

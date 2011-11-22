@@ -12,9 +12,6 @@
 #include "texture.h"
 #include "fbo.h"
 
-#undef _UNICODE
-#include "IL/il.h"
-
 using namespace std;
 
 class CubeMap
@@ -29,7 +26,7 @@ private:
 
     Shader *m_shader;
 
-    GLuint m_textures[6];
+    Texture m_textures[6];
     std::string m_texture_names[6];
 };
 
