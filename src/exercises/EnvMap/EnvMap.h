@@ -50,7 +50,8 @@ protected:
   virtual void draw_scene(DrawMode _draw_mode);
 
 private:
-	void drawObject();
+	void drawEnvironment();
+  void drawObject();
 	
 protected:
 	

@@ -101,10 +101,88 @@ draw_scene(DrawMode _draw_mode)
 	glClearColor(1,1,1,0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  // set parameters
+	m_mainShader.setMatrix4x4Uniform("WorldCameraTransform", m_camera.getTransformation().Inverse());
+  m_mainShader.setMatrix3x3Uniform("WorldCameraNormalTransform", m_camera.getTransformation().Transpose());
+	m_mainShader.setMatrix4x4Uniform("ProjectionMatrix", m_camera.getProjectionMatrix());
+	m_mainShader.setMatrix4x4Uniform("ModelWorldTransform", m_mesh.getTransformation() );
+  m_mainShader.setMatrix4x4Uniform("ModelWorldNormalTransform", m_mesh.getTransformation().Inverse().Transpose() );
+
+  // draw environment cube
+  drawEnvironment();
+
 	// draw main object
 	drawObject();	
 }
 
+
+
+//-----------------------------------------------------------------------------
+void 
+EnvMap::
+drawEnvironment() {
+  const float size = 15.0f;
+
+  m_mainShader.bind(); 
+
+  m_mainShader.setVector3Uniform("diffuseColor", 0.0f, 0.0f, 1.0f);
+
+  // POSITIVE_X
+  glBegin(GL_QUADS);
+  glNormal3f( 1.0f, 0.0f, 0.0f );
+  glVertex3f( size, -size,-size);
+  glVertex3f( size, -size, size);
+  glVertex3f( size,  size, size);
+  glVertex3f( size,  size,-size);
+  glEnd();
+  
+  // NEGATIVE_X
+  glBegin(GL_QUADS);
+  glNormal3f(-1.0f, 0.0f, 0.0f );
+  glVertex3f(-size, -size,-size);
+  glVertex3f(-size, -size, size);
+  glVertex3f(-size,  size, size);
+  glVertex3f(-size,  size,-size);
+  glEnd();
+
+  // POSITIVE_Y
+  glBegin(GL_QUADS);
+  glNormal3f( 0.0f, 1.0f, 0.0f );
+  glVertex3f(-size,  size,-size);
+  glVertex3f(-size,  size, size);
+  glVertex3f( size,  size, size);
+  glVertex3f( size,  size,-size);
+  glEnd();
+
+  // NEGATIVE_Y
+  glBegin(GL_QUADS);
+  glNormal3f( 0.0f,-1.0f, 0.0f );
+  glVertex3f(-size, -size,-size);
+  glVertex3f(-size, -size, size);
+  glVertex3f( size, -size, size);
+  glVertex3f( size, -size,-size);
+  glEnd();
+
+  // POSITIVE_Z
+  glBegin(GL_QUADS);
+  glNormal3f( 0.0f, 0.0f, 1.0f );
+  glVertex3f(-size, -size, size);
+  glVertex3f(-size,  size, size);
+  glVertex3f( size,  size, size);
+  glVertex3f( size, -size, size);
+  glEnd();
+
+  // NEGATIVE_Z
+  glBegin(GL_QUADS);
+  glNormal3f( 0.0f, 0.0f,-1.0f );
+  glVertex3f(-size, -size, -size);
+  glVertex3f(-size,  size, -size);
+  glVertex3f( size,  size, -size);
+  glVertex3f( size, -size, -size);
+  glEnd();
+  
+  m_mainShader.unbind();
+}
 
 //-----------------------------------------------------------------------------
 void 
@@ -143,8 +221,7 @@ drawObject() {
 			m_mainShader.setIntUniform("textureDiffuse", m_mesh.getMaterial(i).m_diffuseTexture.getLayer());
 		}
 
-    std::cout << "Drawing " << m_mesh.getNumberOfFaces(i) << " faces" << std::endl;
-		glDrawElements( GL_TRIANGLES, m_mesh.getNumberOfFaces(i)*3, GL_UNSIGNED_INT, m_mesh.getVertexIndicesPointer(i) );
+   	glDrawElements( GL_TRIANGLES, m_mesh.getNumberOfFaces(i)*3, GL_UNSIGNED_INT, m_mesh.getVertexIndicesPointer(i) );
     
 		if(hasTexture)
 		{
