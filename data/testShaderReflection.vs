@@ -8,9 +8,6 @@ uniform vec3 DiffuseColor;
 
 uniform float3 EyePosition;
 
-varying vec3 VertexToLightVector;
-varying vec3 Normal;
-varying vec4 Color;
 varying vec3 ReflectedRay;
 
 vec3 reflect(vec3 I, vec3 N){return I - 2.0 * N * dot(N, I);}
