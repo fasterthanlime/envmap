@@ -20,6 +20,7 @@
 
 #include "../../gl/TrackballViewer.h"
 #include "../../gl/shader.h"
+#include "../../gl/CubeMap.h"
 #include "../../gl/Mesh3D.h"
 #include "../../gl/Light3D.h"
 #include "../../gl/texture.h"
@@ -60,6 +61,9 @@ protected:
 	
 	// main shader
 	Shader m_mainShader;
+
+  // cube map
+  CubeMap *m_cubeMap;
 	
 };
 
