@@ -144,12 +144,12 @@ EnvMap::
 drawObject() {
 	m_reflectionShader.bind(); 
 
-  // set parameters
+    // set parameters
 	m_reflectionShader.setMatrix4x4Uniform("WorldCameraTransform", m_camera.getTransformation().Inverse());
-  m_reflectionShader.setMatrix3x3Uniform("WorldCameraNormalTransform", m_camera.getTransformation().Transpose());
+    m_reflectionShader.setMatrix3x3Uniform("WorldCameraNormalTransform", m_camera.getTransformation().Transpose());
 	m_reflectionShader.setMatrix4x4Uniform("ProjectionMatrix", m_camera.getProjectionMatrix());
 	m_reflectionShader.setMatrix4x4Uniform("ModelWorldTransform", m_mesh.getTransformation() );
-  m_reflectionShader.setMatrix4x4Uniform("ModelWorldNormalTransform", m_mesh.getTransformation().Inverse().Transpose() );
+    m_reflectionShader.setMatrix4x4Uniform("ModelWorldNormalTransform", m_mesh.getTransformation().Inverse().Transpose() );
 
   m_reflectionShader.setIntUniform("EnvironmentMap", m_cubeMap->getCubeTexture().getLayer());
   m_cubeMap->getCubeTexture().bind();

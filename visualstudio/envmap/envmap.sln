@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual C++ Express 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "envmap", "envmap.vcproj", "{D936DEF8-763B-4038-B0F3-51070CFE9683}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "envmap", "envmap.vcxproj", "{D936DEF8-763B-4038-B0F3-51070CFE9683}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

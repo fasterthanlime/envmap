@@ -7,5 +7,5 @@ uniform samplerCube EnvironmentMap;
 
 void main()
 {
-	gl_FragColor = textureCube(EnvironmentMap, ReflectedRay);
+	gl_FragColor = clamp(textureCube(EnvironmentMap, ReflectedRay),0.0,1.0);
 }
