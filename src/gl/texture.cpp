@@ -95,16 +95,24 @@ void Texture::createCubeMap(const std::string *_fileNames)
 
 	clear();
 
+  m_target = GL_TEXTURE_CUBE_MAP;
+  glEnable(m_target);
+
   glGenTextures(1, &id_);
   assert(id_ != 0);
 
-  m_target = GL_TEXTURE_CUBE_MAP_ARB;
   glBindTexture(m_target, id_);
+  glTexParameteri(m_target, GL_TEXTURE_BASE_LEVEL, 0);
+  glTexParameteri(m_target, GL_TEXTURE_MAX_LEVEL, 0);
+  glTexParameteri(m_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(m_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(m_target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+  glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
   for(int i = 0; i < 6; i++) {
     ilBindImage(ilIDs[i]);
     ilLoadImage(_fileNames[i].c_str());
-
 	  width_  = ilGetInteger(IL_IMAGE_WIDTH);
 	  height_ = ilGetInteger(IL_IMAGE_HEIGHT);
 
@@ -114,15 +122,7 @@ void Texture::createCubeMap(const std::string *_fileNames)
     glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X_ARB + i, 0, GL_RGB, width_, height_, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
   }
 
-	ilDeleteImages(6, ilIDs);
-
-  //glGenerateMipmapEXT(m_target);
-  glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameterf(m_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameterf(m_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  glTexParameterf(m_target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
+	// ilDeleteImages(6, ilIDs);
   glBindTexture(m_target, 0); 
 }
 
@@ -130,7 +130,7 @@ void Texture::createCubeMap(const std::string *_fileNames)
 void Texture::bind() const
 {
 	assert(id_ != 0);
-	glEnable(m_target); 
+	glEnable(m_target);
 	glActiveTextureARB(GL_TEXTURE0_ARB+layer_); 
 	glBindTexture(m_target, id_);
 }

@@ -18,7 +18,6 @@ CubeMap::CubeMap(const std::string& prefix, const float size, Shader *shader)
 
   for(int i = 0; i < 6; i++) {
     m_texture_paths[i] = m_prefix + m_texture_suffixes[i] + ".tga";
-    m_textures[i].create(m_texture_paths[i]);
   }
 
   m_cubeTexture.createCubeMap(m_texture_paths);
@@ -31,64 +30,43 @@ Texture CubeMap::getCubeTexture()
 
 void CubeMap::draw()
 {
+    glBegin(GL_QUADS);
 
     // Render the front quad
-    m_textures[0].bind();
-    glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 0.0f); glVertex3f(  m_size, -m_size, -m_size );
-        glTexCoord2f(1.0f, 0.0f); glVertex3f( -m_size, -m_size, -m_size );
-        glTexCoord2f(1.0f, 1.0f); glVertex3f( -m_size,  m_size, -m_size );
-        glTexCoord2f(0.0f, 1.0f); glVertex3f(  m_size,  m_size, -m_size );
-    glEnd();
-    m_textures[0].unbind();
+    glTexCoord3f(  1.0f, -m_size, -m_size ); glVertex3f(  m_size, -m_size, -m_size );
+    glTexCoord3f( -m_size, -m_size, -m_size ); glVertex3f( -m_size, -m_size, -m_size );
+    glTexCoord3f( -m_size,  m_size, -m_size ); glVertex3f( -m_size,  m_size, -m_size );
+    glTexCoord3f(  m_size,  m_size, -m_size ); glVertex3f(  m_size,  m_size, -m_size );
  
     // Render the left quad
-    m_textures[1].bind();
-    glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 0.0f); glVertex3f(  m_size, -m_size,  m_size );
-        glTexCoord2f(1.0f, 0.0f); glVertex3f(  m_size, -m_size, -m_size );
-        glTexCoord2f(1.0f, 1.0f); glVertex3f(  m_size,  m_size, -m_size );
-        glTexCoord2f(0.0f, 1.0f); glVertex3f(  m_size,  m_size,  m_size );
-    glEnd();
-    m_textures[1].unbind();
+    glTexCoord3f(  m_size, -m_size,  m_size ); glVertex3f(  m_size, -m_size,  m_size );
+    glTexCoord3f(  m_size, -m_size, -m_size ); glVertex3f(  m_size, -m_size, -m_size );
+    glTexCoord3f(  m_size,  m_size, -m_size ); glVertex3f(  m_size,  m_size, -m_size );
+    glTexCoord3f(  m_size,  m_size,  m_size ); glVertex3f(  m_size,  m_size,  m_size );
  
     // Render the back quad
-    m_textures[2].bind();
-    glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 0.0f); glVertex3f( -m_size, -m_size,  m_size );
-        glTexCoord2f(1.0f, 0.0f); glVertex3f(  m_size, -m_size,  m_size );
-        glTexCoord2f(1.0f, 1.0f); glVertex3f(  m_size,  m_size,  m_size );
-        glTexCoord2f(0.0f, 1.0f); glVertex3f( -m_size,  m_size,  m_size );
-    glEnd();
-    m_textures[2].unbind();
+    glTexCoord3f( -m_size, -m_size,  m_size ); glVertex3f( -m_size, -m_size,  m_size );
+    glTexCoord3f(  m_size, -m_size,  m_size ); glVertex3f(  m_size, -m_size,  m_size );
+    glTexCoord3f(  m_size,  m_size,  m_size ); glVertex3f(  m_size,  m_size,  m_size );
+    glTexCoord3f( -m_size,  m_size,  m_size ); glVertex3f( -m_size,  m_size,  m_size );
  
     // Render the right quad
-    m_textures[3].bind();
-    glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 0.0f); glVertex3f( -m_size, -m_size, -m_size );
-        glTexCoord2f(1.0f, 0.0f); glVertex3f( -m_size, -m_size,  m_size );
-        glTexCoord2f(1.0f, 1.0f); glVertex3f( -m_size,  m_size,  m_size );
-        glTexCoord2f(0.0f, 1.0f); glVertex3f( -m_size,  m_size, -m_size );
-    glEnd();
-    m_textures[3].unbind();
+    glTexCoord3f( -m_size, -m_size, -m_size ); glVertex3f( -m_size, -m_size, -m_size );
+    glTexCoord3f( -m_size, -m_size,  m_size ); glVertex3f( -m_size, -m_size,  m_size );
+    glTexCoord3f( -m_size,  m_size,  m_size ); glVertex3f( -m_size,  m_size,  m_size );
+    glTexCoord3f( -m_size,  m_size, -m_size ); glVertex3f( -m_size,  m_size, -m_size );
  
     // Render the top quad
-    m_textures[4].bind();
-    glBegin(GL_QUADS);
-        glTexCoord2f(1.0f, 0.0f); glVertex3f( -m_size,  m_size, -m_size );
-        glTexCoord2f(1.0f, 1.0f); glVertex3f( -m_size,  m_size,  m_size );
-        glTexCoord2f(0.0f, 1.0f); glVertex3f(  m_size,  m_size,  m_size );
-        glTexCoord2f(0.0f, 0.0f); glVertex3f(  m_size,  m_size, -m_size );
-    glEnd();
-    m_textures[4].unbind();
+    glTexCoord3f( -m_size,  m_size, -m_size ); glVertex3f( -m_size,  m_size, -m_size );
+    glTexCoord3f( -m_size,  m_size,  m_size ); glVertex3f( -m_size,  m_size,  m_size );
+    glTexCoord3f(  m_size,  m_size,  m_size ); glVertex3f(  m_size,  m_size,  m_size );
+    glTexCoord3f(  m_size,  m_size, -m_size ); glVertex3f(  m_size,  m_size, -m_size );
  
     // Render the bottom quad
-    m_textures[5].bind();
-    glBegin(GL_QUADS);
-        glTexCoord2f(1.0f, 1.0f); glVertex3f( -m_size, -m_size, -m_size );
-        glTexCoord2f(1.0f, 0.0f); glVertex3f( -m_size, -m_size,  m_size );
-        glTexCoord2f(0.0f, 0.0f); glVertex3f(  m_size, -m_size,  m_size );
-        glTexCoord2f(0.0f, 1.0f); glVertex3f(  m_size, -m_size, -m_size );
+    glTexCoord3f( -m_size, -m_size, -m_size ); glVertex3f( -m_size, -m_size, -m_size );
+    glTexCoord3f( -m_size, -m_size,  m_size ); glVertex3f( -m_size, -m_size,  m_size );
+    glTexCoord3f(  m_size, -m_size,  m_size ); glVertex3f(  m_size, -m_size,  m_size );
+    glTexCoord3f(  m_size, -m_size, -m_size ); glVertex3f(  m_size, -m_size, -m_size );
+
     glEnd();
-    m_textures[5].unbind();
 }

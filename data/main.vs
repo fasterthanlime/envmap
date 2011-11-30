@@ -9,14 +9,14 @@ uniform vec3 DiffuseColor;
 varying vec3 VertexToLightVector;
 varying vec3 Normal;
 varying vec4 Color;
-varying vec2 TextureCoordinate;
+varying vec3 TextureCoordinate;
 
 void main()
 {
 	gl_Position = ProjectionMatrix * WorldCameraTransform * ModelWorldTransform * gl_Vertex;
 	
 	Color = vec4(DiffuseColor, 1.0);
-	TextureCoordinate = vec2(gl_MultiTexCoord0);
+	TextureCoordinate = vec3(gl_MultiTexCoord0);
 	Normal = WorldCameraNormalTransform * ModelWorldNormalTransform * gl_Normal;
 	VertexToLightVector = - vec3(WorldCameraTransform * ModelWorldTransform * gl_Vertex);
 	

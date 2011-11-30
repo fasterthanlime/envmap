@@ -47,7 +47,7 @@ init()
   m_reflectionShader.create("testShaderReflection.vs", "testShaderReflection.fs");
 
   // load cube map
-  m_cubeMap = new CubeMap("deadmeat_skymorning", 15.0f, &m_mainShader);
+  m_cubeMap = new CubeMap("deadmeat_skymorning", 1.5f, &m_mainShader);
 }
 
 
@@ -110,7 +110,7 @@ draw_scene(DrawMode _draw_mode)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // draw environment cube
-  //drawEnvironment();
+  drawEnvironment();
 
 	// draw main object
 	drawObject();	
@@ -129,12 +129,14 @@ drawEnvironment() {
   m_mainShader.setMatrix3x3Uniform("WorldCameraNormalTransform", m_camera.getTransformation().Transpose());
 	m_mainShader.setMatrix4x4Uniform("ProjectionMatrix", m_camera.getProjectionMatrix());
   m_mainShader.setMatrix4x4Uniform("ModelWorldTransform", Matrix4().loadIdentity());
-  m_mainShader.setMatrix4x4Uniform("ModelWorldNormalTransform", Matrix4().loadIdentity());
 
   m_mainShader.setVector3Uniform("DiffuseColor", 0.0f, 0.0f, 1.0f);
 
+  m_cubeMap->getCubeTexture().bind();
+  m_mainShader.setIntUniform("Texture", m_cubeMap->getCubeTexture().getLayer());
   m_cubeMap->draw();
-  
+  m_cubeMap->getCubeTexture().unbind();
+
   m_mainShader.unbind();
 }
 
@@ -146,11 +148,9 @@ drawObject() {
 
   // set parameters
 	m_reflectionShader.setMatrix4x4Uniform("WorldCameraTransform", m_camera.getTransformation().Inverse());
-  m_reflectionShader.setMatrix3x3Uniform("WorldCameraNormalTransform", m_camera.getTransformation().Transpose());
 	m_reflectionShader.setMatrix4x4Uniform("ProjectionMatrix", m_camera.getProjectionMatrix());
 	m_reflectionShader.setMatrix4x4Uniform("ModelWorldTransform", m_mesh.getTransformation() );
-  m_reflectionShader.setMatrix4x4Uniform("ModelWorldNormalTransform", m_mesh.getTransformation().Inverse().Transpose() );
-
+ 
   m_cubeMap->getCubeTexture().bind();
   m_reflectionShader.setIntUniform("EnvironmentMap", m_cubeMap->getCubeTexture().getLayer());
 
@@ -159,8 +159,6 @@ drawObject() {
 
   glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
-	if(m_mesh.hasUvTextureCoord())
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glVertexPointer( 3, GL_DOUBLE, 0, m_mesh.getVertexPointer() );
 	glNormalPointer( GL_DOUBLE, 0, m_mesh.getNormalPointer() );
@@ -169,32 +167,9 @@ drawObject() {
 
 	for(unsigned int i = 0; i < m_mesh.getNumberOfParts(); i++)
 	{
-		bool hasTexture = m_mesh.hasUvTextureCoord() && m_mesh.getMaterial(i).hasDiffuseTexture();
-		m_reflectionShader.setIntUniform("UseTexture", hasTexture);
-		m_reflectionShader.setVector3Uniform("DiffuseColor", 
-										  m_mesh.getMaterial(i).m_diffuseColor.x, 
-										  m_mesh.getMaterial(i).m_diffuseColor.y, 
-                      m_mesh.getMaterial(i).m_diffuseColor.z );
-
-		/*
-    if(hasTexture)
-		{
-			m_mesh.getMaterial(i).m_diffuseTexture.bind();
-			m_reflectionShader.setIntUniform("TextureDiffuse", m_mesh.getMaterial(i).m_diffuseTexture.getLayer());
-		}
-    */
-
-   	glDrawElements( GL_TRIANGLES, m_mesh.getNumberOfFaces(i)*3, GL_UNSIGNED_INT, m_mesh.getVertexIndicesPointer(i) );
-    
-    /*
-		if(hasTexture)
-		{
-			m_mesh.getMaterial(i).m_diffuseTexture.unbind();
-		}
-    */
-
-    m_cubeMap->getCubeTexture().unbind();
+		glDrawElements( GL_TRIANGLES, m_mesh.getNumberOfFaces(i)*3, GL_UNSIGNED_INT, m_mesh.getVertexIndicesPointer(i) );
 	}
+  m_cubeMap->getCubeTexture().unbind();
 	
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);

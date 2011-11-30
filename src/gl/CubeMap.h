@@ -27,7 +27,6 @@ private:
 
     Shader *m_shader;
 
-    Texture m_textures[6];
     Texture m_cubeTexture;
 
     std::string m_texture_suffixes[6];
