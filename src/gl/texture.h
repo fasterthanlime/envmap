@@ -53,5 +53,6 @@ private:
 	unsigned int layer_;
 	unsigned int width_;
 	unsigned int height_;
+  GLenum m_target;
 };
 #endif

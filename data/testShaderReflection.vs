@@ -9,7 +9,7 @@ uniform vec3 DiffuseColor;
 uniform vec3 EyePosition;
 
 varying vec3 ReflectedRay;
-
+varying vec3 WorldPosition;
 
 void main()
 {
@@ -18,7 +18,7 @@ void main()
 	
 	vec3 WorldPosition = (ModelWorldTransform * gl_Vertex).xyz;
 	vec3 Normal = normalize((ModelWorldNormalTransform * gl_Normal));
-	
+  
 	vec3 IncidentRay = normalize(WorldPosition - EyePosition);
 	ReflectedRay = normalize(reflect(IncidentRay, Normal));
 	
