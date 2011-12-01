@@ -47,7 +47,7 @@ init()
   m_reflectionShader.create("testShaderReflection.vs", "testShaderReflection.fs");
 
   // load cube map
-  m_cubeMap = new CubeMap("deadmeat_skymorning", 1.5f, &m_mainShader);
+  m_cubeMap = new CubeMap("deadmeat_skymorning", 15.0f, &m_mainShader);
 }
 
 
