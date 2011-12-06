@@ -15,6 +15,7 @@
 #ifndef CAMERA3D_HH
 #define CAMERA3D_HH
 
+#define M_PI 3.14158265
 
 //== INCLUDES =================================================================
 

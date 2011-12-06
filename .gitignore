@@ -1,4 +1,5 @@
 .*.swp
+*.ncb
 visualstudio/envmap/Debug/*.obj
 visualstudio/envmap/Debug/*.idb
 visualstudio/envmap/Debug/*.pdb
