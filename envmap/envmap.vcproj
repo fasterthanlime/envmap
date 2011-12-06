@@ -38,6 +38,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;C:\Documents and Settings\Administrator\My Documents\envmap\visualstudio\libs&quot;"
+				DebugInformationFormat="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -50,8 +51,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib;glew32.lib;devil.lib"
+				AdditionalDependencies="glut32.lib DevIL.lib ILU.lib glew32.lib"
 				AdditionalLibraryDirectories="&quot;C:\Documents and Settings\Administrator\My Documents\envmap\visualstudio\libs&quot;"
+				GenerateDebugInformation="true"
+				GenerateMapFile="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
